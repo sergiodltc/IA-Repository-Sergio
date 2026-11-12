@@ -1,0 +1,44 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: "Inter", sans-serif; }
+    #cta-card {
+      position: absolute; left: 70px; top: 230px; width: 940px;
+      padding: 44px 52px 50px; border-radius: 40px;
+      background: rgba(247, 244, 239, 0.96);
+      box-shadow: 0 24px 70px rgba(34, 32, 29, 0.16);
+      border: 1px solid rgba(34, 32, 29, 0.06);
+      color: #22201d; text-align: center;
+    }
+    #cta-small { font-size: 44px; font-weight: 700; color: #5d564e; }
+    #cta-word {
+      display: inline-block; margin-top: 18px; padding: 18px 54px; border-radius: 999px;
+      background: #22201d; color: #f7f4ef; font-size: 96px; font-weight: 900; letter-spacing: 0.04em;
+    }
+    #cta-gift {
+      margin-top: 34px; display: flex; align-items: center; justify-content: center; gap: 22px;
+      font-size: 38px; font-weight: 700; color: #22201d; line-height: 1.2; text-align: left;
+    }
+    #cta-gift svg { width: 64px; height: 64px; flex: none; color: #9c8b76; }
+  </style>
+  <div id="root" data-composition-id="cta" data-width="1080" data-height="1920">
+    <div id="cta-card" class="clip" data-start="0" data-duration="5.4">
+      <div id="cta-small">Comenta la palabra</div>
+      <div id="cta-word">HORARIO</div>
+      <div id="cta-gift">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        <span>Te paso mi calendario de<br/>correos y WhatsApp para Buen Fin</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#cta-card", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 0.05);
+    tl.set("#cta-word", { scale: 0.85, opacity: 0 }, 0);
+    tl.to("#cta-word", { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2.2)" }, 0.45);
+    tl.to("#cta-word", { scale: 1.05, duration: 0.25, yoyo: true, repeat: 1, ease: "power1.inOut" }, 1.6);
+    tl.set("#cta-gift", { opacity: 0, y: 14 }, 0);
+    // "y te paso mi calendario..."
+    tl.to("#cta-gift", { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 2.4);
+    window.__timelines["cta"] = tl;
+  </script>
+</template>

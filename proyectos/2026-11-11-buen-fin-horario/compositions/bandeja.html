@@ -1,0 +1,103 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: "Inter", sans-serif; }
+    #ban-card {
+      position: absolute; left: 70px; top: 210px; width: 940px; height: 600px;
+      border-radius: 40px; overflow: hidden;
+      background: rgba(247, 244, 239, 0.96);
+      box-shadow: 0 24px 70px rgba(34, 32, 29, 0.16);
+      border: 1px solid rgba(34, 32, 29, 0.06);
+      color: #22201d;
+    }
+    #ban-head {
+      height: 104px; padding: 0 44px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 2px solid rgba(34, 32, 29, 0.08);
+    }
+    #ban-head h2 { font-size: 38px; font-weight: 800; letter-spacing: -0.02em; }
+    #ban-count {
+      font-size: 30px; font-weight: 800; padding: 10px 22px; border-radius: 999px;
+      background: #22201d; color: #f7f4ef; min-width: 120px; text-align: center;
+    }
+    #ban-list { position: absolute; left: 0; right: 0; top: 106px; bottom: 0; }
+    .ban-row {
+      position: absolute; left: 28px; right: 28px; height: 84px;
+      display: flex; align-items: center; gap: 22px; padding: 0 22px;
+      border-radius: 20px; background: #fff; border: 1px solid rgba(34, 32, 29, 0.07);
+      font-size: 30px;
+    }
+    .ban-dot { width: 46px; height: 46px; border-radius: 50%; background: #d8d2c8; flex: none; }
+    .ban-from { font-weight: 800; width: 210px; flex: none; }
+    .ban-subj { flex: 1; color: #6f675e; white-space: nowrap; overflow: hidden; }
+    .ban-time { font-weight: 800; color: #22201d; }
+    #ban-tu { border: 3px solid #9c8b76; background: #fbf8f3; }
+    #ban-tu .ban-dot { background: #9c8b76; }
+    #ban-sat {
+      position: absolute; left: 70px; top: 836px; padding: 16px 30px; border-radius: 999px;
+      background: #22201d; color: #f7f4ef; font-size: 36px; font-weight: 800;
+    }
+    #ban-olv {
+      position: absolute; right: 70px; top: 836px; padding: 16px 30px; border-radius: 999px;
+      background: #f7f4ef; color: #7d6d58; font-size: 36px; font-weight: 800;
+      border: 3px solid #9c8b76;
+    }
+  </style>
+  <div id="root" data-composition-id="bandeja" data-width="1080" data-height="1920">
+    <div id="ban-card" class="clip" data-start="0" data-duration="8.9" data-layout-allow-overflow>
+      <div id="ban-head"><h2>Bandeja de entrada</h2><div id="ban-count">0</div></div>
+      <div id="ban-list">
+        <div id="ban-r1" class="ban-row"><div class="ban-dot"></div><div class="ban-from">Marca A</div><div class="ban-subj">¡Ofertas de Buen Fin!</div><div class="ban-time">9:00</div></div>
+        <div id="ban-r2" class="ban-row"><div class="ban-dot"></div><div class="ban-from">Marca B</div><div class="ban-subj">Hasta 50% de descuento</div><div class="ban-time">9:00</div></div>
+        <div id="ban-tu" class="ban-row"><div class="ban-dot"></div><div class="ban-from">Tu marca</div><div class="ban-subj">Buen Fin empieza hoy</div><div class="ban-time">9:00</div></div>
+        <div id="ban-r3" class="ban-row"><div class="ban-dot"></div><div class="ban-from">Marca C</div><div class="ban-subj">Solo por hoy</div><div class="ban-time">9:00</div></div>
+        <div id="ban-r4" class="ban-row"><div class="ban-dot"></div><div class="ban-from">Marca D</div><div class="ban-subj">Envío gratis</div><div class="ban-time">9:00</div></div>
+        <div id="ban-r5" class="ban-row"><div class="ban-dot"></div><div class="ban-from">Marca E</div><div class="ban-subj">Últimas piezas</div><div class="ban-time">9:00</div></div>
+        <div id="ban-r6" class="ban-row"><div class="ban-dot"></div><div class="ban-from">Marca F</div><div class="ban-subj">2x1 en todo</div><div class="ban-time">9:00</div></div>
+        <div id="ban-r7" class="ban-row"><div class="ban-dot"></div><div class="ban-from">Marca G</div><div class="ban-subj">No te lo pierdas</div><div class="ban-time">9:00</div></div>
+      </div>
+    </div>
+    <div id="ban-sat" class="clip" data-start="5.9" data-duration="3">Cliente saturado</div>
+    <div id="ban-olv" class="clip" data-start="7.6" data-duration="1.3">Tu correo: olvidado</div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const ROW = 98, TOP = 18;
+    tl.fromTo("#ban-card", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0);
+
+    // Fase 1: llegan correos (Tu marca está entre las primeras)
+    const first = ["#ban-r1", "#ban-r2", "#ban-tu"];
+    first.forEach((id, i) => {
+      tl.fromTo(id, { y: TOP + i * ROW - 30, opacity: 0 }, { y: TOP + i * ROW, opacity: 1, duration: 0.3, ease: "power2.out" }, 0.3 + i * 0.25);
+    });
+    tl.set(["#ban-r3", "#ban-r4", "#ban-r5", "#ban-r6", "#ban-r7"], { opacity: 0, y: TOP - 30 }, 0);
+
+    // Fase 2: "todas las marcas mandan a la misma hora": llegan arriba y empujan hacia abajo.
+    // Dos llegan mientras habla de las marcas; tres más entierran "Tu marca" en "olvidado".
+    const late = [["#ban-r3", 1.6], ["#ban-r4", 2.8], ["#ban-r5", 7.45], ["#ban-r6", 7.7], ["#ban-r7", 7.95]];
+    let order = ["#ban-r1", "#ban-r2", "#ban-tu"];
+    late.forEach(([id, t]) => {
+      order = [id, ...order];
+      order.forEach((rid, i) => {
+        if (rid === id) {
+          tl.fromTo(id, { y: TOP - 30, opacity: 0 }, { y: TOP, opacity: 1, duration: 0.3, ease: "power2.out" }, t);
+        } else {
+          tl.to(rid, { y: TOP + i * ROW, duration: 0.3, ease: "power2.out" }, t);
+        }
+      });
+    });
+
+    // Contador de correos a las 9:00
+    const counter = { n: 0 };
+    tl.fromTo(counter, { n: 0 }, {
+      n: 184, duration: 7.8, ease: "power1.in",
+      onUpdate: () => { document.querySelector("#ban-count").textContent = "+" + Math.round(counter.n); }
+    }, 0.3);
+
+    // Fase 3: saturado + tu correo se hunde y se apaga
+    tl.fromTo("#ban-sat", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 5.9);
+    tl.to("#ban-tu", { opacity: 0.4, duration: 0.6, ease: "power1.in" }, 7.45);
+    tl.fromTo("#ban-olv", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 7.6);
+
+    tl.to(["#ban-card", "#ban-sat", "#ban-olv"], { opacity: 0, duration: 0.3, ease: "power2.in" }, 8.55);
+    window.__timelines["bandeja"] = tl;
+  </script>
+</template>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"ink","type":"color","label":"Texto","default":"#22201D"},
+    {"id":"paper","type":"color","label":"Tarjeta","default":"#F7F4EF"},
+    {"id":"accent","type":"color","label":"Acento","default":"#9C8B76"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      :root {
+        --ink: #22201d;
+        --paper: #f7f4ef;
+        --accent: #9c8b76;
+        --font-display: "Inter", sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #e9e6e1;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        font-family: var(--font-display);
+      }
+      #cam {
+        position: absolute;
+        inset: 0;
+        transform-origin: 50% 42%;
+      }
+      #base {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 1920px;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="37"
+      data-width="1080"
+      data-height="1920"
+    >
+      <!-- Cámara: punch-ins hechos con transforms en este wrapper sin tiempo -->
+      <div id="cam">
+        <video
+          id="base"
+          class="clip"
+          src="assets/base.mp4"
+          data-start="0"
+          data-duration="37"
+          data-track-index="0"
+          playsinline
+          data-has-audio="true"
+          style="z-index: 1"
+        ></video>
+      </div>
+
+      <div id="hook" data-composition-id="hook" data-composition-src="compositions/hook.html"
+        data-start="0" data-duration="3" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="reloj" data-composition-id="reloj" data-composition-src="compositions/reloj.html"
+        data-start="3" data-duration="7.7" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="bandeja" data-composition-id="bandeja" data-composition-src="compositions/bandeja.html"
+        data-start="10.7" data-duration="8.9" data-track-index="2" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="solucion" data-composition-id="solucion" data-composition-src="compositions/solucion.html"
+        data-start="19.6" data-duration="8.8" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="checklist" data-composition-id="checklist" data-composition-src="compositions/checklist.html"
+        data-start="28.4" data-duration="3.2" data-track-index="2" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+      <div id="cta" data-composition-id="cta" data-composition-src="compositions/cta.html"
+        data-start="31.6" data-duration="5.4" data-track-index="3" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 2"></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      // Punch-ins en los momentos clave (cortes secos, sin animar el tamaño)
+      tl.set("#cam", { scale: 1 }, 0);
+      tl.set("#cam", { scale: 1.07 }, 19.6);   // "Pero si tú mandas tu correo... 9:07"
+      tl.set("#cam", { scale: 1 }, 22.25);
+      tl.set("#cam", { scale: 1.05 }, 28.4);   // "Mismo correo, mismo asunto"
+      tl.set("#cam", { scale: 1.1 }, 31.6);    // CTA
+      tl.set("#cam", { scale: 1.1 }, 37);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

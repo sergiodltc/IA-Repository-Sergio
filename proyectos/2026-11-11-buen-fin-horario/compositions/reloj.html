@@ -1,0 +1,51 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: "Inter", sans-serif; }
+    #rel-card {
+      position: absolute; left: 70px; top: 230px; width: 940px; height: 380px;
+      padding: 40px 48px; border-radius: 40px;
+      background: rgba(247, 244, 239, 0.94);
+      box-shadow: 0 24px 70px rgba(34, 32, 29, 0.16);
+      border: 1px solid rgba(34, 32, 29, 0.06);
+      color: #22201d; display: flex; align-items: center; gap: 48px;
+    }
+    #rel-clock { width: 280px; height: 280px; flex: none; }
+    #rel-text { flex: 1; position: relative; height: 280px; }
+    #rel-time { font-size: 128px; font-weight: 900; letter-spacing: -0.05em; line-height: 1; margin-top: 30px; }
+    #rel-time small { font-size: 44px; font-weight: 700; letter-spacing: 0; color: #7d6d58; margin-left: 10px; }
+    .rel-label { position: absolute; left: 0; top: 178px; font-size: 40px; font-weight: 700; line-height: 1.15; color: #5d564e; }
+  </style>
+  <div id="root" data-composition-id="reloj" data-width="1080" data-height="1920">
+    <div id="rel-card" class="clip" data-start="0" data-duration="7.7">
+      <svg id="rel-clock" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="92" fill="#fff" stroke="#22201d" stroke-width="6"/>
+        <g stroke="#22201d" stroke-width="4" stroke-linecap="round">
+          <line x1="100" y1="18" x2="100" y2="30"/><line x1="182" y1="100" x2="170" y2="100"/>
+          <line x1="100" y1="182" x2="100" y2="170"/><line x1="18" y1="100" x2="30" y2="100"/>
+        </g>
+        <line id="rel-hour" x1="100" y1="100" x2="100" y2="56" stroke="#22201d" stroke-width="9" stroke-linecap="round"/>
+        <line id="rel-min" x1="100" y1="100" x2="100" y2="34" stroke="#9c8b76" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="7" fill="#22201d"/>
+      </svg>
+      <div id="rel-text">
+        <div id="rel-time">9:00<small>AM</small></div>
+        <div id="rel-label-a" class="rel-label">La mayoría envía aquí</div>
+        <div id="rel-label-b" class="rel-label">El horario más común</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#rel-card", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0);
+    // Manecillas avanzan de 7:30 a 9:00 (llega cuando dice "a las 9")
+    tl.fromTo("#rel-min", { rotation: 180, svgOrigin: "100 100" }, { rotation: 720, svgOrigin: "100 100", duration: 3.3, ease: "power2.inOut" }, 0.1);
+    tl.fromTo("#rel-hour", { rotation: 225, svgOrigin: "100 100" }, { rotation: 270, svgOrigin: "100 100", duration: 3.3, ease: "power2.inOut" }, 0.1);
+    tl.fromTo("#rel-time", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 3.35);
+    tl.fromTo("#rel-label-a", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.5);
+    // "ya que es uno de los horarios más comunes"
+    tl.to("#rel-label-a", { opacity: 0, duration: 0.25 }, 5.2);
+    tl.fromTo("#rel-label-b", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 5.35);
+    tl.to("#rel-card", { opacity: 0, y: -14, duration: 0.35, ease: "power2.in" }, 7.3);
+    window.__timelines["reloj"] = tl;
+  </script>
+</template>
