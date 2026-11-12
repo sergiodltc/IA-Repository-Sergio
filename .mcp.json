@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "blender": {
+      "command": "uvx",
+      "args": ["blender-mcp"]
+    },
+    "earshot": {
+      "command": "earshot",
+      "args": ["mcp"],
+      "env": { "EARSHOT_THREADS": "3" }
+    }
+  }
+}
